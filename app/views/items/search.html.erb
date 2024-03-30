@@ -11,14 +11,22 @@
   <% if @items.present? %>
     <% @items.first(10).each do |item| %>
       <div>
-        <% if item.medium_image_url.present? %>
-          <%= image_tag("#{item.medium_image_url}") %>
-        <% else %>
-          画像なし
+        <%= form_with(model: @item, local: true) do |f| %>        
+          <% if item.medium_image_url.present? %>
+            <%= image_tag("#{item.medium_image_url}") %>
+          <% else %>
+            画像なし
+          <% end %>
+          <%= link_to item.name, "#{item.url_pc}" %>
+          <%= item.genre_name %>
+          <%= text_field_tag "item_name", "#{item.name}" %>
+          <%= f.hidden_field :item_name, value: item.name %>
+          <%= f.hidden_field :item_image, value: item.medium_image_url %>
+          <%= f.hidden_field :item_genre, value: item.genre_name %>
+          <%= f.hidden_field :item_url_pc, value: item.url_pc %>
+          <%= f.hidden_field :item_url_mobile, value: item.url_mobile %>
+          <%= f.submit "この商品を追加する" %>
         <% end %>
-        <%= link_to item.name, "#{item.url_pc}" %>
-        <%= item.genre_name %>
-        <%= text_field_tag "item_name", "#{item.name}" %>
       </div>
     <% end %>
   <% end %>
