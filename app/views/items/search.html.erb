@@ -1,0 +1,25 @@
+<h1>Items#search</h1>
+<h1>アイテム名を入力して検索</h1>
+
+<div>
+  <%= form_with url: items_search_path, method: :get, local: true do |f| %>
+    <div>
+      <%= f.text_field :keyword, value: params[:keyword] %>
+      <%= f.submit '製品を検索' %>
+    </div>
+  <% end %>
+  <% if @items.present? %>
+    <% @items.first(10).each do |item| %>
+      <div>
+        <% if item.medium_image_url.present? %>
+          <%= image_tag("#{item.medium_image_url}") %>
+        <% else %>
+          画像なし
+        <% end %>
+        <%= link_to item.name, "#{item.url_pc}" %>
+        <%= item.genre_name %>
+        <%= text_field_tag "item_name", "#{item.name}" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
