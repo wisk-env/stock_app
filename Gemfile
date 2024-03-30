@@ -38,6 +38,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'devise'
 
+gem 'rakuten_web_service'
+
 gem 'dotenv-rails'
 
 group :development, :test do

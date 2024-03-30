@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'items/search'
+  resources :items
   root 'homes#index'
   devise_for :users, controllers: {
     sessions: 'users/sessions',
