@@ -1,0 +1,24 @@
+<h1>ストック一覧 Stocks#index</h1>
+
+<% @stocks.each do |stock| %>
+  <div>
+    ストック名：
+    <%= stock.stock_name %>
+  </div>
+  <div>
+    ストック数：
+    <%= stock.stock_qty %>
+  </div>
+  <div>
+    カテゴリー：
+    <%= stock.category %>
+  </div>
+  <div>
+    メモ：
+    <%= stock.note %>
+  </div>
+  <div>
+    商品画像：
+    <%= image_tag("#{stock.stock_image}") %>
+  </div>
+<% end %>
