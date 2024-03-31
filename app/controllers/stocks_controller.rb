@@ -10,7 +10,7 @@ class StocksController < ApplicationController
     if @stock.save
       redirect_to stocks_path
     else
-      redirect_back fallback_location: item_path(@item)
+      redirect_back fallback_location: items_search_path
     end
   end
 
