@@ -1,0 +1,25 @@
+class StocksController < ApplicationController
+  def index
+  end
+
+  def show
+  end
+
+  def create
+    @stock = Stock.new(stock_params)
+    if @stock.save
+      redirect_to stocks_path
+    else
+      redirect_back fallback_location: item_path(@item)
+    end
+  end
+
+  def edit
+  end
+
+  private
+
+  def stock_params
+    params.require(:stock).permit(:stock_name, :stock_qty, :category, :note, :stock_image, :user_id, :item_id)
+  end
+end
