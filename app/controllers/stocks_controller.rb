@@ -1,4 +1,7 @@
 class StocksController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, { only: [:show, :edit] }
+
   def index
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
@@ -33,6 +36,12 @@ class StocksController < ApplicationController
   def destroy
     @stock = Stock.find(params[:id])
     @stock.destroy
+    redirect_to :stocks
+  end
+
+  def ensure_correct_user
+    @stock = Stock.find(params[:id])
+    return unless @stock.user_id != current_user.id
     redirect_to :stocks
   end
 
