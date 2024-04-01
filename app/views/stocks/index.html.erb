@@ -21,4 +21,8 @@
     商品画像：
     <%= image_tag("#{stock.stock_image}") %>
   </div>
+  <div>
+      編集：
+      <%= link_to "編集", edit_stock_path(stock) %>
+  </div>
 <% end %>

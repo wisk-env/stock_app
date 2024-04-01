@@ -17,6 +17,16 @@ class StocksController < ApplicationController
   end
 
   def edit
+    @stock = Stock.find(params[:id])
+  end
+
+  def update
+    @stock = Stock.find(params[:id])
+    if @stock.update(stock_params)
+      redirect_to :stocks
+    else
+      redirect_back fallback_location: "edit"
+    end
   end
 
   private
