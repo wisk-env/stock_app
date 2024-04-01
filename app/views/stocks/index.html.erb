@@ -22,7 +22,13 @@
     <%= image_tag("#{stock.stock_image}") %>
   </div>
   <div>
-      編集：
-      <%= link_to "編集", edit_stock_path(stock) %>
+    編集：
+    <%= link_to "編集", edit_stock_path(stock) %>
+  </div>
+  <div>
+    削除：
+    <% if user_signed_in? && current_user.id == stock.user_id %>
+      <%= link_to "削除", stock_path(stock), method: :delete, data: {confirm: "削除しますか？"} %>
+    <% end %>
   </div>
 <% end %>
