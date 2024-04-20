@@ -1,0 +1,38 @@
+<h1>ストック一覧 Stocks#index</h1>
+
+<% @stocks.each do |stock| %>
+  <div>
+    ストック名：
+    <%= stock.stock_name %>
+  </div>
+  <div>
+    ストック数：
+    <%= stock.stock_qty %>
+  </div>
+  <div>
+    カテゴリー：
+    <%= stock.category %>
+  </div>
+  <div>
+    メモ：
+    <%= stock.note %>
+  </div>
+  <div>
+    商品画像：
+    <%= image_tag("#{stock.stock_image}") %>
+  </div>
+  <div>
+    詳細：
+    <%= link_to "詳細", stock_path(stock) %>
+  </div>
+  <% if user_signed_in? && current_user.id == stock.user_id %>
+    <div>
+      編集：
+      <%= link_to "編集", edit_stock_path(stock) %>
+    </div>
+    <div>
+      削除：
+        <%= link_to "削除", stock_path(stock), method: :delete, data: {confirm: "削除しますか？"} %>
+    </div>
+  <% end %>
+<% end %>
