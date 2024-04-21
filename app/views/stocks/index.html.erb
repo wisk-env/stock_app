@@ -22,6 +22,12 @@
     <%= image_tag("#{stock.stock_image}") %>
   </div>
   <div>
+    商品タグ：
+    <% stock.tags.each do |stock_tag| %>
+      <%= stock_tag.name %>
+    <% end %>
+  </div>
+  <div>
     詳細：
     <%= link_to "詳細", stock_path(stock) %>
   </div>
