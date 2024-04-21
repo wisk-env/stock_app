@@ -25,11 +25,14 @@ class StocksController < ApplicationController
 
   def edit
     @stock = Stock.find(params[:id])
+    @tag_list = @stock.tags.pluck(:name).join(' ')
   end
 
   def update
     @stock = Stock.find(params[:id])
+    tag_list = params[:stock][:name].split(' ')
     if @stock.update(stock_params)
+      @stock.save_tag(tag_list)
       redirect_to :stocks
     else
       redirect_back fallback_location: "edit"
