@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_20_051146) do
+ActiveRecord::Schema.define(version: 2024_04_21_051304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,9 +30,11 @@ ActiveRecord::Schema.define(version: 2024_04_20_051146) do
     t.bigint "tag_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["stock_id", "tag_id"], name: "index_stock_tags_on_stock_id_and_tag_id", unique: true
     t.index ["stock_id"], name: "index_stock_tags_on_stock_id"
     t.index ["tag_id"], name: "index_stock_tags_on_tag_id"
+    t.index ["user_id"], name: "index_stock_tags_on_user_id"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -70,6 +72,7 @@ ActiveRecord::Schema.define(version: 2024_04_20_051146) do
 
   add_foreign_key "stock_tags", "stocks"
   add_foreign_key "stock_tags", "tags"
+  add_foreign_key "stock_tags", "users"
   add_foreign_key "stocks", "items"
   add_foreign_key "stocks", "users"
 end
