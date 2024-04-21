@@ -10,6 +10,10 @@
     <%= f.number_field :stock_qty, value: 1, in: 1..100 %>
   </div>
   <div>
+    <%= f.label :start_time, "ストック期限" %>
+    <%= f.date_field :start_time, value: Time.current.since(30.days).to_date %>
+  </div>
+  <div>
     <%= f.label :category, "商品カテゴリー" %>
     <%= f.text_field :category, value: @item.item_genre %>
   </div>
