@@ -13,7 +13,10 @@ class StocksController < ApplicationController
 
   def create
     @stock = Stock.new(stock_params)
+    @stock.user_id = current_user.id
+    tag_list = params[:stock][:name].split(' ')
     if @stock.save
+      @stock.save_tag(tag_list)
       redirect_to stocks_path
     else
       redirect_back fallback_location: items_search_path
