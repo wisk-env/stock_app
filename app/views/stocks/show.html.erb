@@ -15,6 +15,12 @@
     商品画像：
     <%= image_tag("#{@stock.stock_image}") %>
   </div>
+  <div>
+    商品タグ:
+    <% @stock.tags.each do |stock_tag| %>
+      <%= link_to stock_tag.name, "#", class: "btn" %>
+    <% end %>
+  </div>
   <% if user_signed_in? && current_user.id == @stock.user_id %>
     <div>
       編集：

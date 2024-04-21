@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_31_011047) do
+ActiveRecord::Schema.define(version: 2024_04_21_051304) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,18 @@ ActiveRecord::Schema.define(version: 2024_03_31_011047) do
     t.string "item_url_mobile"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "stock_tags", force: :cascade do |t|
+    t.bigint "stock_id"
+    t.bigint "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["stock_id", "tag_id"], name: "index_stock_tags_on_stock_id_and_tag_id", unique: true
+    t.index ["stock_id"], name: "index_stock_tags_on_stock_id"
+    t.index ["tag_id"], name: "index_stock_tags_on_tag_id"
+    t.index ["user_id"], name: "index_stock_tags_on_user_id"
   end
 
   create_table "stocks", force: :cascade do |t|
@@ -39,6 +51,12 @@ ActiveRecord::Schema.define(version: 2024_03_31_011047) do
     t.index ["user_id"], name: "index_stocks_on_user_id"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -52,6 +70,9 @@ ActiveRecord::Schema.define(version: 2024_03_31_011047) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "stock_tags", "stocks"
+  add_foreign_key "stock_tags", "tags"
+  add_foreign_key "stock_tags", "users"
   add_foreign_key "stocks", "items"
   add_foreign_key "stocks", "users"
 end

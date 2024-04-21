@@ -1,0 +1,15 @@
+.btn {
+  margin: 0 .1em .6em 0;
+	padding: .6em;
+  background-color:#7b68ee;
+  border: 1px solid #7b68ee;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn:before {
+	content: "#";
+  margin-right: 2px;
+  font-weight: 700;
+}

@@ -14,6 +14,10 @@
     <%= f.text_field :category, value: @stock.category %>
   </div>
   <div>
+    <%= f.label :name, "商品タグ" %>
+    <%= f.text_field :name, value: @tag_list, class: "text_field" %>
+  </div>
+  <div>
     <%= f.label :note, "メモ" %>
     <%= f.text_area :note, value: @stock.note %>
   </div>

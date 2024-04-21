@@ -14,6 +14,10 @@
     <%= f.text_field :category, value: @item.item_genre %>
   </div>
   <div>
+    <%= f.label :name, "商品タグ" %>
+    <%= f.text_field :name, class: "text_field" %>
+  </div>
+  <div>
     <%= f.label :note, "メモ" %>
     <%= f.text_area :note, wrap: "soft" %>
   </div>
