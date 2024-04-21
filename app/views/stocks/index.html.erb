@@ -24,7 +24,7 @@
   <div>
     商品タグ：
     <% stock.tags.each do |stock_tag| %>
-      <%= stock_tag.name %>
+      <%= link_to stock_tag.name, "#", class: "btn" %>
     <% end %>
   </div>
   <div>
