@@ -14,6 +14,10 @@
     <%= f.text_field :category, value: @stock.category %>
   </div>
   <div>
+    <%= f.label :start_time, "ストック期限" %>
+    <%= f.date_field :start_time, value: @stock.start_time&.to_date %>
+  </div>
+  <div>
     <%= f.label :name, "商品タグ" %>
     <%= f.text_field :name, value: @tag_list, class: "text_field" %>
   </div>
