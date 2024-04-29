@@ -51,9 +51,14 @@ class StocksController < ApplicationController
     redirect_to :stocks
   end
 
+  def stock_calendar
+    @user = User.find(current_user.id)
+    @stocks = @user.stocks
+  end
+
   private
 
   def stock_params
-    params.require(:stock).permit(:stock_name, :stock_qty, :category, :note, :stock_image, :user_id, :item_id)
+    params.require(:stock).permit(:stock_name, :stock_qty, :category, :note, :stock_image, :user_id, :item_id, :start_time)
   end
 end

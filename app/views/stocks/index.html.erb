@@ -10,6 +10,17 @@
     <%= stock.stock_qty %>
   </div>
   <div>
+    ストック期限：
+    <%= stock.start_time.strftime("%Y/%m/%d") %>
+    <% if (stock.start_time.end_of_day - Time.current).to_i / 1.day > 0 %>
+      <%= "(期限まであと #{ (stock.start_time.end_of_day - Time.current).to_i / 1.day } 日です)" %>
+    <% elsif (stock.start_time.end_of_day - Time.current).to_i / 1.day == 0 %>
+      <%= "(今日が期限です)" %>
+    <% else %>
+      <%= "(期限が切れています)" %>
+    <% end %>
+  </div>
+  <div>
     カテゴリー：
     <%= stock.category %>
   </div>
