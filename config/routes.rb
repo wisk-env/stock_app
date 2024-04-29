@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'items/search'
   resources :items
   resources :stocks
+  get "stock_calendar" => "stocks#stock_calendar"
   root 'homes#index'
   devise_for :users, controllers: {
     sessions: 'users/sessions',

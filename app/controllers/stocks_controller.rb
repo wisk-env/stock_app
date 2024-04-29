@@ -51,6 +51,11 @@ class StocksController < ApplicationController
     redirect_to :stocks
   end
 
+  def stock_calendar
+    @user = User.find(current_user.id)
+    @stocks = @user.stocks
+  end
+
   private
 
   def stock_params

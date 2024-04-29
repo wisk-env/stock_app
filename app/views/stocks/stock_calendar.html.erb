@@ -1,0 +1,9 @@
+<%= month_calendar events: @stocks do |date, stocks| %>
+  <%= date.day %>
+  <% stocks.each do |stock| %>
+    <div>
+      <%= image_tag("#{stock.stock_image}", size: "40x40") %>
+      <%= link_to stock.stock_name.truncate(10), stock %>
+    </div>
+  <% end %>
+<% end %>
