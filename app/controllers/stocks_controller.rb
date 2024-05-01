@@ -6,6 +6,7 @@ class StocksController < ApplicationController
   def index
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
+    @stock_categories = @user.stocks.select(:category).distinct
   end
 
   def show

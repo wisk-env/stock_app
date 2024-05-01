@@ -3,6 +3,12 @@
   <%= f.label :stock_name_cont, 'キーワード検索' %>
   <%= f.search_field :stock_name_or_category_or_note_cont %>
   <br>
+  <%= f.label :category_eq, 'カテゴリー' %>
+  <% @stock_categories.each do |stock_category| %>
+    <%= f.check_box :category_eq_any, { multiple: true, include_hidden: false }, stock_category[:category] %>
+    <%= stock_category.category %>
+  <% end %>
+  <br>
   <%= f.submit '検索' %>
 <% end %>
 
