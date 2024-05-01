@@ -1,0 +1,55 @@
+<h1>検索結果</h1>
+
+<% @results.each do |stock| %>
+  <div>
+    ストック名 :
+    <%= stock.stock_name %>
+  </div>
+  <div>
+    ストック数 :
+    <%= stock.stock_qty %>
+  </div>
+  <div>
+    ストック期限：
+    <%= stock.start_time.strftime("%Y/%m/%d") %>
+    <% if (stock.start_time.end_of_day - Time.current).to_i / 1.day > 0 %>
+      <%= "(期限まであと #{ (stock.start_time.end_of_day - Time.current).to_i / 1.day } 日です)" %>
+    <% elsif (stock.start_time.end_of_day - Time.current).to_i / 1.day == 0 %>
+      <%= "(今日が期限です)" %>
+    <% else %>
+      <%= "(期限が切れています)" %>
+    <% end %>
+  </div>
+  <div>
+    カテゴリー：
+    <%= stock.category %>
+  </div>
+  <div>
+    メモ：
+    <%= stock.note %>
+  </div>
+  <div>
+    商品画像：
+    <%= image_tag("#{stock.stock_image}") %>
+  </div>
+  <div>
+    商品タグ：
+    <% stock.tags.each do |stock_tag| %>
+      <%= link_to stock_tag.name, "#", class: "btn" %>
+    <% end %>
+  </div>
+  <div>
+    詳細：
+    <%= link_to "詳細", stock_path(stock) %>
+  </div>
+  <% if user_signed_in? && current_user.id == stock.user_id %>
+    <div>
+      編集：
+      <%= link_to "編集", edit_stock_path(stock) %>
+    </div>
+    <div>
+      削除：
+        <%= link_to "削除", stock_path(stock), method: :delete, data: {confirm: "削除しますか？"} %>
+    </div>
+  <% end %>
+<% end %>
