@@ -1,5 +1,12 @@
-<h1>ストック一覧 Stocks#index</h1>
+<h1>ストック検索</h1>
+<%= search_form_for @q, url: search_stocks_path do |f| %>
+  <%= f.label :stock_name_cont, 'キーワード検索' %>
+  <%= f.search_field :stock_name_or_category_or_note_cont %>
+  <br>
+  <%= f.submit '検索' %>
+<% end %>
 
+<h1>ストック一覧 Stocks#index</h1>
 <% @stocks.each do |stock| %>
   <div>
     ストック名：
