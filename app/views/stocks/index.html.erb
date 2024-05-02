@@ -9,6 +9,12 @@
     <%= stock_category.category %>
   <% end %>
   <br>
+  <%= f.label :tags_name_eq, "タグ" %>
+  <% @tag_lists.each do |tag| %>
+    <%= f.check_box :tags_name_eq_any, { multiple: true, include_hidden: false }, tag[:name] %>
+    <%= tag.name %>
+  <% end %>
+  <br>
   <%= f.submit '検索' %>
 <% end %>
 

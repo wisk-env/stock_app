@@ -7,6 +7,7 @@ class StocksController < ApplicationController
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
     @stock_categories = @user.stocks.select(:category).distinct
+    @tag_lists = @user.tags.distinct
   end
 
   def show
@@ -59,7 +60,7 @@ class StocksController < ApplicationController
   end
 
   def search
-    @results = @q.result
+    @results = @q.result.distinct
   end
 
   private
