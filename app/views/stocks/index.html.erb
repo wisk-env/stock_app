@@ -15,6 +15,14 @@
     <%= tag.name %>
   <% end %>
   <br>
+  <%= f.label "ストック期限" %>
+  <%= f.date_field :start_time_gteq, value: Time.current.to_date %> ~
+  <%= f.date_field :start_time_lteq %>
+  <br>
+  <%= f.label :start_time, "期限" %>
+  <%= f.radio_button( :sorts, 'start_time asc' ) %>近い
+  <%= f.radio_button( :sorts, 'start_time desc' ) %>遠い
+  <br>
   <%= f.submit '検索' %>
 <% end %>
 
