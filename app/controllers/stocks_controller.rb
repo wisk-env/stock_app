@@ -70,6 +70,7 @@ class StocksController < ApplicationController
   end
 
   def set_q
-    @q = Stock.ransack(params[:q])
+    @user = User.find(current_user.id)
+    @q = @user.stocks.ransack(params[:q])
   end
 end
