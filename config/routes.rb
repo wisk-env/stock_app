@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   get 'items/search'
   resources :items
-  resources :stocks
+  resources :stocks do
+    collection do
+      get 'search'
+    end
+  end
   get "stock_calendar" => "stocks#stock_calendar"
   root 'homes#index'
   devise_for :users, controllers: {

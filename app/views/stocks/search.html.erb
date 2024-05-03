@@ -1,39 +1,12 @@
-<h1>ストック検索</h1>
-<%= search_form_for @q, url: search_stocks_path do |f| %>
-  <%= f.label :stock_name_cont, 'キーワード検索' %>
-  <%= f.search_field :stock_name_or_category_or_note_cont %>
-  <br>
-  <%= f.label :category_eq, 'カテゴリー' %>
-  <% @stock_categories.each do |stock_category| %>
-    <%= f.check_box :category_eq_any, { multiple: true, include_hidden: false }, stock_category[:category] %>
-    <%= stock_category.category %>
-  <% end %>
-  <br>
-  <%= f.label :tags_name_eq, "タグ" %>
-  <% @tag_lists.each do |tag| %>
-    <%= f.check_box :tags_name_eq_any, { multiple: true, include_hidden: false }, tag[:name] %>
-    <%= tag.name %>
-  <% end %>
-  <br>
-  <%= f.label "ストック期限" %>
-  <%= f.date_field :start_time_gteq, value: Time.current.to_date %> ~
-  <%= f.date_field :start_time_lteq %>
-  <br>
-  <%= f.label :start_time, "期限" %>
-  <%= f.radio_button( :sorts, 'start_time asc' ) %>近い
-  <%= f.radio_button( :sorts, 'start_time desc' ) %>遠い
-  <br>
-  <%= f.submit '検索' %>
-<% end %>
+<h1>検索結果</h1>
 
-<h1>ストック一覧 Stocks#index</h1>
-<% @stocks.each do |stock| %>
+<% @results.each do |stock| %>
   <div>
-    ストック名：
+    ストック名 :
     <%= stock.stock_name %>
   </div>
   <div>
-    ストック数：
+    ストック数 :
     <%= stock.stock_qty %>
   </div>
   <div>

@@ -1,10 +1,13 @@
 class StocksController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_correct_user, { only: [:show, :edit] }
+  before_action :set_q, only: [:index, :search]
 
   def index
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
+    @stock_categories = @user.stocks.select(:category).distinct
+    @tag_lists = @user.tags.distinct
   end
 
   def show
@@ -56,9 +59,18 @@ class StocksController < ApplicationController
     @stocks = @user.stocks
   end
 
+  def search
+    @results = @q.result.distinct
+  end
+
   private
 
   def stock_params
     params.require(:stock).permit(:stock_name, :stock_qty, :category, :note, :stock_image, :user_id, :item_id, :start_time)
+  end
+
+  def set_q
+    @user = User.find(current_user.id)
+    @q = @user.stocks.ransack(params[:q])
   end
 end
