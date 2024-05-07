@@ -67,7 +67,7 @@
   </div>
   <div>
     詳細：
-    <%= link_to "詳細", stock_path(stock) %>
+    <%= link_to "買い物リストに追加する", stock_path(stock) %>
   </div>
   <% if user_signed_in? && current_user.id == stock.user_id %>
     <div>
