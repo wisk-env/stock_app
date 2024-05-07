@@ -1,0 +1,32 @@
+<h1>Baskets#index</h1>
+
+<table>
+  <% if @baskets.present? %>
+    <tr>
+      <th>商品画像</th>
+      <th>商品名</th>
+      <th>購入数</th>
+      <th>購入期限</th>
+      <th>編集</th>
+      <th>削除</th>
+    </tr>
+    <% @baskets.each do |basket| %>
+    <tr>
+      <td>
+        <%= image_tag("#{basket.product_image}") %>
+      </td>
+      <td>
+        <%= basket.product_name %>
+      </td>
+      <td>
+        <%= basket.product_qty %>
+      </td>
+      <td>
+        <%= basket.due_date.strftime("%Y/%m/%d") %>
+      </td>
+    </tr>
+    <% end %>
+  <% else %>
+    買い物リストに購入予定の商品はありません
+  <% end %>
+</table>
