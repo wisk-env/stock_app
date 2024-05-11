@@ -5,6 +5,8 @@ class BasketsController < ApplicationController
   end
 
   def show
+    @basket = Basket.find_by(id: params[:id])
+    @purchase = Purchase.new
   end
 
   def create

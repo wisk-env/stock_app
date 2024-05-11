@@ -7,6 +7,7 @@
       <th>商品名</th>
       <th>購入数</th>
       <th>購入期限</th>
+      <th>✅</th>
       <th>編集</th>
       <th>削除</th>
     </tr>
@@ -23,6 +24,13 @@
       </td>
       <td>
         <%= basket.due_date.strftime("%Y/%m/%d") %>
+      </td>
+      <td>
+        <% if basket.purchase.present? %>
+          <%= link_to "購入済み", "#" %>
+        <% else %>
+          <%= link_to "購入済みにする", basket_path(basket) %>
+        <% end %>
       </td>
     </tr>
     <% end %>

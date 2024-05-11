@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
   get "stock_calendar" => "stocks#stock_calendar"
   resources :baskets
+  resources :purchases
   root 'homes#index'
   devise_for :users, controllers: {
     sessions: 'users/sessions',

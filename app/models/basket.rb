@@ -5,4 +5,5 @@ class Basket < ApplicationRecord
 
   belongs_to :stock
   belongs_to :user
+  has_one :purchase, dependent: :destroy
 end
