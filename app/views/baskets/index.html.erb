@@ -32,6 +32,11 @@
           <%= link_to "購入済みにする", basket_path(basket) %>
         <% end %>
       </td>
+      <td>
+        <% unless basket.purchase.present? %>
+          <%= link_to "購入予定の編集", edit_basket_path(basket) %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   <% else %>

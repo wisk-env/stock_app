@@ -1,4 +1,7 @@
 class BasketsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_purchase, { only: [:show, :edit] }
+
   def index
     @user = User.find(current_user.id)
     @baskets = @user.baskets
@@ -19,6 +22,22 @@ class BasketsController < ApplicationController
   end
 
   def edit
+    @basket = Basket.find(params[:id])
+  end
+
+  def update
+    @basket = Basket.find(params[:id])
+    if @basket.update(basket_params)
+      redirect_to baskets_path
+    else
+      render "edit"
+    end
+  end
+
+  def ensure_purchase
+    @basket = Basket.find_by(id: params[:id])
+    return unless @basket.purchase 
+    redirect_to :baskets
   end
 
   private

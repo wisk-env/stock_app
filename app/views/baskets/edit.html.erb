@@ -1,0 +1,25 @@
+<h1>Baskets#edit</h1>
+<h1>購入予定の編集</h1>
+
+<%= form_with(model: @basket, local: true) do |f| %>
+  <div>
+    <%= f.label :product_name, "商品名" %>
+    <%= f.text_area :product_name, value: @basket.product_name %>
+  </div>
+  <div>
+    <%= f.label :product_qty, "購入数" %>
+    <%= f.number_field :product_qty, value: @basket.product_qty, in: 1..100 %>
+  </div>
+  <div>
+    <%= f.label :due_date, "購入期限" %>
+    <%= f.date_field :due_date, value: @basket.due_date.to_date %>
+  </div>
+    <%= f.hidden_field :product_image, value: @basket.product_image %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.hidden_field :stock_id, value: @basket.stock_id %>
+  </div>
+  <div>
+    <%= link_to "キャンセル", :baskets %>
+    <%= f.submit "購入予定を更新" %>
+  </div>
+<% end %>
