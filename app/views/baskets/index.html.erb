@@ -9,6 +9,7 @@
       <th>購入期限</th>
       <th>✅</th>
       <th>編集</th>
+      <th>ストック情報</th>
       <th>削除</th>
     </tr>
     <% @baskets.each do |basket| %>
@@ -35,6 +36,11 @@
       <td>
         <% unless basket.purchase.present? %>
           <%= link_to "購入予定の編集", edit_basket_path(basket) %>
+        <% end %>
+      </td>
+      <td>
+        <% unless basket.purchase.presence.nil? %>
+          <%= link_to "ストック情報を更新する", edit_stock_path(basket.stock_id) %>
         <% end %>
       </td>
       <td>

@@ -1,6 +1,7 @@
 class BasketsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_purchase, { only: [:show, :edit] }
+  before_action :ensure_correct_user, { only: [:show, :edit] }
 
   def index
     @user = User.find(current_user.id)
@@ -43,6 +44,12 @@ class BasketsController < ApplicationController
   def ensure_purchase
     @basket = Basket.find_by(id: params[:id])
     return unless @basket.purchase 
+    redirect_to :baskets
+  end
+
+  def ensure_correct_user
+    @basket = Basket.find(params[:id])
+    return unless @basket.user_id != current_user.id
     redirect_to :baskets
   end
 
