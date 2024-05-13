@@ -37,6 +37,11 @@
           <%= link_to "購入予定の編集", edit_basket_path(basket) %>
         <% end %>
       </td>
+      <td>
+        <% if user_signed_in? && current_user.id == basket.user_id %>
+          <%= link_to "削除", basket_path(basket), method: :delete, data: {confirm: "アイテムを削除しますか？"} %>
+        <% end %>
+      </td>
     </tr>
     <% end %>
   <% else %>

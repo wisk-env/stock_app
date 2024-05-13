@@ -34,6 +34,12 @@ class BasketsController < ApplicationController
     end
   end
 
+  def destroy
+    @basket = Basket.find(params[:id])
+    @basket.destroy
+    redirect_to :baskets
+  end
+
   def ensure_purchase
     @basket = Basket.find_by(id: params[:id])
     return unless @basket.purchase 
