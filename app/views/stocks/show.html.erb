@@ -35,3 +35,26 @@
       <%= link_to "削除", stock_path(@stock), method: :delete, data: {confirm: "削除しますか？"} %>
     </div>
   <% end %>
+  <h3>買い物リストに追加しますか？</h3>
+  <%= form_with(model: @basket, local: true) do |f| %>
+    <div>
+      <%= f.label :product_name, "商品名" %>
+      <%= f.text_area :product_name, value: @stock.stock_name %>
+    </div>
+    <div>
+      <%= f.label :product_qty, "購入数" %>
+      <%= f.number_field :product_qty, value: @stock.stock_qty, in: 1..100 %>
+    </div>
+    <div>
+      <%= f.label :due_date, "購入期限" %>
+      <%= f.date_field :due_date, value: @stock.start_time.to_date %>
+    </div>
+      <%= f.hidden_field :product_image, value: @stock.stock_image %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :stock_id, value: @stock.id %>
+    </div>
+    <div>
+      <%= f.submit "買い物リストに追加" %>
+    </div>
+  <% end %>
+

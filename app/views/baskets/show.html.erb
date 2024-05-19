@@ -1,0 +1,13 @@
+<h1>Baskets#show</h1>
+<h3>購入済みにしますか？</h3>
+
+<%= form_with(model: @purchase, local: true) do |f| %>
+  <div>
+    <%= f.hidden_field :basket_id, value: @basket.id %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+  </div>
+  <div>
+    <%= link_to "キャンセル", 'javascript:history.back()' %>
+    <%= f.submit "はい" %>
+  </div>
+<% end %>

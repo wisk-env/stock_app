@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_21_135137) do
+ActiveRecord::Schema.define(version: 2024_05_07_135707) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "baskets", force: :cascade do |t|
+    t.string "product_name", null: false
+    t.integer "product_qty"
+    t.string "product_image"
+    t.date "due_date"
+    t.bigint "stock_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_id"], name: "index_baskets_on_stock_id"
+    t.index ["user_id"], name: "index_baskets_on_user_id"
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "item_name"
@@ -23,6 +36,15 @@ ActiveRecord::Schema.define(version: 2024_04_21_135137) do
     t.string "item_url_mobile"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.bigint "basket_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["basket_id"], name: "index_purchases_on_basket_id", unique: true
+    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "stock_tags", force: :cascade do |t|
@@ -71,6 +93,10 @@ ActiveRecord::Schema.define(version: 2024_04_21_135137) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "baskets", "stocks"
+  add_foreign_key "baskets", "users"
+  add_foreign_key "purchases", "baskets"
+  add_foreign_key "purchases", "users"
   add_foreign_key "stock_tags", "stocks"
   add_foreign_key "stock_tags", "tags"
   add_foreign_key "stock_tags", "users"
