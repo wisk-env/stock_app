@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_07_135707) do
+ActiveRecord::Schema.define(version: 2024_06_01_040926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,12 @@ ActiveRecord::Schema.define(version: 2024_05_07_135707) do
     t.datetime "updated_at", null: false
     t.index ["stock_id"], name: "index_baskets_on_stock_id"
     t.index ["user_id"], name: "index_baskets_on_user_id"
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|
@@ -80,6 +86,16 @@ ActiveRecord::Schema.define(version: 2024_05_07_135707) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_groups", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "family_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_user_groups_on_family_id"
+    t.index ["user_id", "family_id"], name: "index_user_groups_on_user_id_and_family_id", unique: true
+    t.index ["user_id"], name: "index_user_groups_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -89,7 +105,19 @@ ActiveRecord::Schema.define(version: 2024_05_07_135707) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name", null: false
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
+    t.integer "invited_by_family_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -102,4 +130,6 @@ ActiveRecord::Schema.define(version: 2024_05_07_135707) do
   add_foreign_key "stock_tags", "users"
   add_foreign_key "stocks", "items"
   add_foreign_key "stocks", "users"
+  add_foreign_key "user_groups", "families"
+  add_foreign_key "user_groups", "users"
 end

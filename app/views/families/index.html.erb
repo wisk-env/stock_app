@@ -1,0 +1,15 @@
+<h1>グループ一覧</h1>
+<% if current_user.families.present? %>
+  <p>グループ名</p>
+  <% @families.each do |family| %>
+    <%= family.name %><br>
+    <p>グループ人数</p>
+    <%= family.users.count %><br>
+    <p>メンバー</p>
+    <% family.users.each do |family_user| %>
+      <%= family_user.name %><br>
+    <% end %>
+  <% end %>
+<% else %>
+  所属しているグループはありません
+<% end %>
