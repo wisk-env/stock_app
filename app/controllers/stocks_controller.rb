@@ -6,7 +6,7 @@ class StocksController < ApplicationController
   def index
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
-    @stock_categories = @user.stocks.select(:category).distinct
+    @group_stocks_category = Stock.joins(user: :user_groups).select('stocks.category').merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
     @tag_lists = @user.tags.distinct
     @group_stocks = Stock.joins(user: :user_groups).select('stocks.*').where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id)).includes(:tags).order('id DESC')
   end

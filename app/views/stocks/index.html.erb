@@ -4,9 +4,9 @@
   <%= f.search_field :stock_name_or_category_or_note_cont %>
   <br>
   <%= f.label :category_eq, 'カテゴリー' %>
-  <% @stock_categories.each do |stock_category| %>
-    <%= f.check_box :category_eq_any, { multiple: true, include_hidden: false }, stock_category[:category] %>
-    <%= stock_category.category %>
+  <% @group_stocks_category.each do |group_stock_category| %>
+    <%= f.check_box :category_eq_any, { multiple: true, checked: group_stock_category[:checked], disabled: group_stock_category[:disabled], include_hidden: false }, group_stock_category[:category] %>
+    <%= group_stock_category.category %>
   <% end %>
   <br>
   <%= f.label :tags_name_eq, "タグ" %>
