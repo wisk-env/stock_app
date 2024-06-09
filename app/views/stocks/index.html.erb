@@ -80,3 +80,59 @@
     </div>
   <% end %>
 <% end %>
+<h1>グループのストック</h1>
+<div>
+  <% @group_stocks.each do |group_stock| %>
+    <div>
+      ストック名：
+      <%= group_stock.stock_name %>
+    </div>
+    <div>
+      ストック数：
+      <%= group_stock.stock_qty %>
+    </div>
+    <div>
+      ストック期限：
+      <%= group_stock.start_time.strftime("%Y/%m/%d") %>
+      <% if (group_stock.start_time.end_of_day - Time.current).to_i / 1.day > 0 %>
+        <%= "(期限まであと #{ (group_stock.start_time.end_of_day - Time.current).to_i / 1.day } 日です)" %>
+      <% elsif (group_stock.start_time.end_of_day - Time.current).to_i / 1.day == 0 %>
+        <%= "(今日が期限です)" %>
+      <% else %>
+        <%= "(期限が切れています)" %>
+      <% end %>
+    </div>
+    <div>
+      カテゴリー：
+      <%= group_stock.category %>
+    </div>
+    <div>
+      メモ：
+      <%= group_stock.note %>
+    </div>
+    <div>
+      商品画像：
+      <%= image_tag("#{group_stock.stock_image}") %>
+    </div>
+    <div>
+      商品タグ：
+      <% group_stock.tags.each do |stock_tag| %>
+        <%= link_to stock_tag.name, "#", class: "btn" %>
+      <% end %>
+    </div>
+    <% if user_signed_in? && current_user.id == group_stock.user_id %>
+      <div>
+        詳細：
+        <%= link_to "買い物リストに追加する", stock_path(group_stock) %>
+      </div>
+    <% end %>
+    <div>
+      <% if user_signed_in? && current_user.id == group_stock.user_id %>
+        編集：
+        <%= link_to "編集", edit_stock_path(group_stock) %>
+        削除：
+        <%= link_to "削除", stock_path(group_stock), method: :delete, data: {confirm: "削除しますか？"} %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

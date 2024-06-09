@@ -8,6 +8,7 @@ class StocksController < ApplicationController
     @stocks = @user.stocks.order('id DESC')
     @stock_categories = @user.stocks.select(:category).distinct
     @tag_lists = @user.tags.distinct
+    @group_stocks = Stock.joins(user: :user_groups).select('stocks.*').where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id)).includes(:tags).order('id DESC')
   end
 
   def show
