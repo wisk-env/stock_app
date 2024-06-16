@@ -7,7 +7,8 @@ class StocksController < ApplicationController
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
     @group_stocks_category = Stock.joins(user: :user_groups).select('stocks.category').merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
-    @tag_lists = @user.tags.distinct
+    @tag_lists = Tag.joins(users: :user_groups).merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
+    @group_users = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
     @group_stocks = Stock.joins(user: :user_groups).select('stocks.*').where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id)).includes(:tags).order('id DESC')
   end
 
@@ -62,7 +63,8 @@ class StocksController < ApplicationController
   end
 
   def search
-    @results = @q.result.distinct
+    @user_id = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
+    @results = @q.result.order(id: "DESC").distinct.where(user_id: [@user_id.ids])
   end
 
   private
@@ -72,7 +74,6 @@ class StocksController < ApplicationController
   end
 
   def set_q
-    @user = User.find(current_user.id)
-    @q = @user.stocks.ransack(params[:q])
+    @q = Stock.ransack(params[:q])
   end
 end

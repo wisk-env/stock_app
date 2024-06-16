@@ -15,6 +15,12 @@
     <%= tag.name %>
   <% end %>
   <br>
+  <%= f.label :user_name_eq, "ユーザー" %>
+  <% @group_users.each do |group_user| %>
+    <%= f.check_box :user_name_eq_any, { multiple: true, checked: group_user[:checked], disabled: group_user[:disabled], include_hidden: false }, group_user[:name] %>
+    <%= group_user.name %>
+  <% end %>
+  <br>
   <%= f.label "ストック期限" %>
   <%= f.date_field :start_time_gteq, value: Time.current.to_date %> ~
   <%= f.date_field :start_time_lteq %>
