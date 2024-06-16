@@ -6,10 +6,15 @@ class StocksController < ApplicationController
   def index
     @user = User.find(current_user.id)
     @stocks = @user.stocks.order('id DESC')
-    @group_stocks_category = Stock.joins(user: :user_groups).select('stocks.category').merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
-    @tag_lists = Tag.joins(users: :user_groups).merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
-    @group_users = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
-    @group_stocks = Stock.joins(user: :user_groups).select('stocks.*').where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id)).includes(:tags).order('id DESC')
+    if @user.families.first.nil?
+      @stock_categories = @user.stocks.select(:category).distinct
+      @tag_lists = @user.tags.distinct
+    else
+      @group_stocks_category = Stock.joins(user: :user_groups).select('stocks.category').merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
+      @group_tag_lists = Tag.joins(users: :user_groups).merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
+      @group_users = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
+      @group_stocks = Stock.joins(user: :user_groups).select('stocks.*').where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id)).includes(:tags).order('id DESC')
+    end
   end
 
   def show
@@ -63,8 +68,13 @@ class StocksController < ApplicationController
   end
 
   def search
-    @user_id = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
-    @results = @q.result.order(id: "DESC").distinct.where(user_id: [@user_id.ids])
+    @user = User.find(current_user.id)
+    if @user.families.first.nil?
+      @results = @q.result.distinct
+    else
+      @user_id = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
+      @results = @q.result.order(id: "DESC").distinct.where(user_id: [@user_id.ids])
+    end
   end
 
   private
@@ -74,6 +84,11 @@ class StocksController < ApplicationController
   end
 
   def set_q
-    @q = Stock.ransack(params[:q])
+    @user = User.find(current_user.id)
+    if @user.families.first.nil?
+      @q = @user.stocks.ransack(params[:q])
+    else
+      @q = Stock.ransack(params[:q])
+    end
   end
 end

@@ -3,22 +3,36 @@
   <%= f.label :stock_name_cont, 'キーワード検索' %>
   <%= f.search_field :stock_name_or_category_or_note_cont %>
   <br>
-  <%= f.label :category_eq, 'カテゴリー' %>
-  <% @group_stocks_category.each do |group_stock_category| %>
-    <%= f.check_box :category_eq_any, { multiple: true, checked: group_stock_category[:checked], disabled: group_stock_category[:disabled], include_hidden: false }, group_stock_category[:category] %>
-    <%= group_stock_category.category %>
-  <% end %>
-  <br>
-  <%= f.label :tags_name_eq, "タグ" %>
-  <% @tag_lists.each do |tag| %>
-    <%= f.check_box :tags_name_eq_any, { multiple: true, include_hidden: false }, tag[:name] %>
-    <%= tag.name %>
-  <% end %>
-  <br>
-  <%= f.label :user_name_eq, "ユーザー" %>
-  <% @group_users.each do |group_user| %>
-    <%= f.check_box :user_name_eq_any, { multiple: true, checked: group_user[:checked], disabled: group_user[:disabled], include_hidden: false }, group_user[:name] %>
-    <%= group_user.name %>
+  <% if @user.families.first.nil? %>
+    <%= f.label :category_eq, 'カテゴリー' %>
+    <% @stock_categories.each do |stock_category| %>
+      <%= f.check_box :category_eq_any, { multiple: true, include_hidden: false }, stock_category[:category] %>
+      <%= stock_category.category %>
+    <% end %>
+    <br>
+    <%= f.label :tags_name_eq, "タグ" %>
+    <% @tag_lists.each do |tag| %>
+      <%= f.check_box :tags_name_eq_any, { multiple: true, include_hidden: false }, tag[:name] %>
+      <%= tag.name %>
+    <% end %>
+  <% else %>
+    <%= f.label :category_eq, 'カテゴリー' %>
+    <% @group_stocks_category.each do |group_stock_category| %>
+      <%= f.check_box :category_eq_any, { multiple: true, checked: group_stock_category[:checked], disabled: group_stock_category[:disabled], include_hidden: false }, group_stock_category[:category] %>
+      <%= group_stock_category.category %>
+    <% end %>
+    <br>
+    <%= f.label :tags_name_eq, "タグ" %>
+    <% @group_tag_lists.each do |tag| %>
+      <%= f.check_box :tags_name_eq_any, { multiple: true, include_hidden: false }, tag[:name] %>
+      <%= tag.name %>
+    <% end %>
+    <br>
+    <%= f.label :user_name_eq, "ユーザー" %>
+    <% @group_users.each do |group_user| %>
+      <%= f.check_box :user_name_eq_any, { multiple: true, checked: group_user[:checked], disabled: group_user[:disabled], include_hidden: false }, group_user[:name] %>
+      <%= group_user.name %>
+    <% end %>
   <% end %>
   <br>
   <%= f.label "ストック期限" %>
@@ -87,58 +101,62 @@
   <% end %>
 <% end %>
 <h1>グループのストック</h1>
-<div>
-  <% @group_stocks.each do |group_stock| %>
-    <div>
-      ストック名：
-      <%= group_stock.stock_name %>
-    </div>
-    <div>
-      ストック数：
-      <%= group_stock.stock_qty %>
-    </div>
-    <div>
-      ストック期限：
-      <%= group_stock.start_time.strftime("%Y/%m/%d") %>
-      <% if (group_stock.start_time.end_of_day - Time.current).to_i / 1.day > 0 %>
-        <%= "(期限まであと #{ (group_stock.start_time.end_of_day - Time.current).to_i / 1.day } 日です)" %>
-      <% elsif (group_stock.start_time.end_of_day - Time.current).to_i / 1.day == 0 %>
-        <%= "(今日が期限です)" %>
-      <% else %>
-        <%= "(期限が切れています)" %>
-      <% end %>
-    </div>
-    <div>
-      カテゴリー：
-      <%= group_stock.category %>
-    </div>
-    <div>
-      メモ：
-      <%= group_stock.note %>
-    </div>
-    <div>
-      商品画像：
-      <%= image_tag("#{group_stock.stock_image}") %>
-    </div>
-    <div>
-      商品タグ：
-      <% group_stock.tags.each do |stock_tag| %>
-        <%= link_to stock_tag.name, "#", class: "btn" %>
-      <% end %>
-    </div>
-    <% if user_signed_in? && current_user.id == group_stock.user_id %>
+<% if @user.families.first.nil? %>
+  所属しているグループはありません
+<% else %>
+  <div>
+    <% @group_stocks.each do |group_stock| %>
       <div>
-        詳細：
-        <%= link_to "買い物リストに追加する", stock_path(group_stock) %>
+        ストック名：
+        <%= group_stock.stock_name %>
+      </div>
+      <div>
+        ストック数：
+        <%= group_stock.stock_qty %>
+      </div>
+      <div>
+        ストック期限：
+        <%= group_stock.start_time.strftime("%Y/%m/%d") %>
+        <% if (group_stock.start_time.end_of_day - Time.current).to_i / 1.day > 0 %>
+          <%= "(期限まであと #{ (group_stock.start_time.end_of_day - Time.current).to_i / 1.day } 日です)" %>
+        <% elsif (group_stock.start_time.end_of_day - Time.current).to_i / 1.day == 0 %>
+          <%= "(今日が期限です)" %>
+        <% else %>
+          <%= "(期限が切れています)" %>
+        <% end %>
+      </div>
+      <div>
+        カテゴリー：
+        <%= group_stock.category %>
+      </div>
+      <div>
+        メモ：
+        <%= group_stock.note %>
+      </div>
+      <div>
+        商品画像：
+        <%= image_tag("#{group_stock.stock_image}") %>
+      </div>
+      <div>
+        商品タグ：
+        <% group_stock.tags.each do |stock_tag| %>
+          <%= link_to stock_tag.name, "#", class: "btn" %>
+        <% end %>
+      </div>
+      <% if user_signed_in? && current_user.id == group_stock.user_id %>
+        <div>
+          詳細：
+          <%= link_to "買い物リストに追加する", stock_path(group_stock) %>
+        </div>
+      <% end %>
+      <div>
+        <% if user_signed_in? && current_user.id == group_stock.user_id %>
+          編集：
+          <%= link_to "編集", edit_stock_path(group_stock) %>
+          削除：
+          <%= link_to "削除", stock_path(group_stock), method: :delete, data: {confirm: "削除しますか？"} %>
+        <% end %>
       </div>
     <% end %>
-    <div>
-      <% if user_signed_in? && current_user.id == group_stock.user_id %>
-        編集：
-        <%= link_to "編集", edit_stock_path(group_stock) %>
-        削除：
-        <%= link_to "削除", stock_path(group_stock), method: :delete, data: {confirm: "削除しますか？"} %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
