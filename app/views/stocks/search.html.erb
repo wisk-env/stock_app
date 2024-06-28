@@ -39,10 +39,10 @@
     <% end %>
   </div>
   <% if user_signed_in? && current_user.id == stock.user_id %>
-  <div>
-    詳細：
-    <%= link_to "買い物リストに追加する", stock_path(stock) %>
-  </div>
+    <div>
+      詳細：
+      <%= link_to "買い物リストに追加する", stock_path(stock) %>
+    </div>
     <div>
       編集：
       <%= link_to "編集", edit_stock_path(stock) %>
