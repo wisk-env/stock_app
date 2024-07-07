@@ -94,7 +94,7 @@
       </td>
     </tr>
     <% end %>
-  <% elsif current_user.families.first.id %>
+  <% elsif current_user.families.first.present? %>
     グループの買い物リストに購入予定の商品はありません
   <% else %>
     所属しているグループはありません
