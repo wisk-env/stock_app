@@ -7,9 +7,8 @@
       <th>商品名</th>
       <th>購入数</th>
       <th>購入期限</th>
-      <th>✅</th>
+      <th>購入状況</th>
       <th>編集</th>
-      <th>ストック情報</th>
       <th>削除</th>
     </tr>
     <% @baskets.each do |basket| %>
@@ -27,19 +26,19 @@
         <%= basket.due_date.strftime("%Y/%m/%d") %>
       </td>
       <td>
-        <% if basket.purchase.present? %>
-          <%= link_to "購入済み", "#" %>
+        <% if basket.purchase.present? && basket.user_id != basket.purchase.user_id %>
+          <%= "#{basket.purchase.user.name} さんによって購入されました" %>
+        <% elsif basket.purchase.present? && basket.user_id == basket.purchase.user_id %>
+          <%= "購入済み" %>
         <% else %>
+          <%= "購入されていません" %><br>
           <%= link_to "購入済みにする", basket_path(basket) %>
         <% end %>
       </td>
       <td>
-        <% unless basket.purchase.present? %>
+        <% if basket.purchase.nil? %>
           <%= link_to "購入予定の編集", edit_basket_path(basket) %>
-        <% end %>
-      </td>
-      <td>
-        <% unless basket.purchase.presence.nil? %>
+        <% else %>
           <%= link_to "ストック情報を更新する", edit_stock_path(basket.stock_id) %>
         <% end %>
       </td>
@@ -52,5 +51,52 @@
     <% end %>
   <% else %>
     買い物リストに購入予定の商品はありません
+  <% end %>
+</table>
+
+<h1>グループの買い物リスト</h1>
+<table>
+  <% if @group_baskets.present? %>
+    <tr>
+      <th>商品画像</th>
+      <th>商品名</th>
+      <th>購入数</th>
+      <th>購入期限</th>
+      <th>購入希望者</th>
+      <th>購入状況</th>
+    </tr>
+    <% @group_baskets.each do |group_basket| %>
+    <tr>
+      <td>
+        <%= image_tag("#{group_basket.product_image}") %>
+      </td>
+      <td>
+        <%= group_basket.product_name %>
+      </td>
+      <td>
+        <%= group_basket.product_qty %>
+      </td>
+      <td>
+        <%= group_basket.due_date.strftime("%Y/%m/%d") %>
+      </td>
+      <td>
+        <%= group_basket.user.name %>
+      </td>
+      <td>
+        <% if group_basket.purchase.present? && group_basket.user_id != group_basket.purchase.user_id %>
+          <%= "#{group_basket.purchase.user.name} さんによって購入されました" %>
+        <% elsif group_basket.purchase.present? && group_basket.user_id == group_basket.purchase.user_id %>
+          <%= "購入済み" %>
+        <% else %>
+          <%= "購入されていません" %><br>
+          <%= link_to "購入済みにする", basket_path(group_basket) %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  <% elsif current_user.families.first.id %>
+    グループの買い物リストに購入予定の商品はありません
+  <% else %>
+    所属しているグループはありません
   <% end %>
 </table>

@@ -1,11 +1,13 @@
 class BasketsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_purchase, { only: [:show, :edit] }
-  before_action :ensure_correct_user, { only: [:show, :edit] }
+  before_action :ensure_correct_user, { only: [:edit] }
 
   def index
     @user = User.find(current_user.id)
-    @baskets = @user.baskets
+    @baskets = @user.baskets.order('id DESC')
+    @group_baskets = Basket.joins(user: :user_groups).where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id))
+    @tag_lists = Tag.joins(users: :user_groups).merge(UserGroup.where(family_id: current_user.families.first.id)).distinct
   end
 
   def show
