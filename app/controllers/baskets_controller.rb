@@ -56,9 +56,19 @@ class BasketsController < ApplicationController
     redirect_to :baskets
   end
 
+  def destroy_selected_products
+    @baskets = Basket.all
+    checked_data = params[:deletes]&.keys
+    if checked_data.nil?
+      redirect_back fallback_location: baskets_path
+    elsif @baskets.destroy(checked_data)
+      redirect_to :baskets
+    end
+  end
+
   private
 
   def basket_params
-    params.require(:basket).permit(:product_image, :product_name, :product_qty, :due_date, :stock_id, :user_id)
+    params.require(:basket).permit(:product_image, :product_name, :product_qty, :due_date, :stock_id, :user_id, :deletes)
   end
 end
