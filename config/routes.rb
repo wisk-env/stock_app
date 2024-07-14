@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
   get "stock_calendar" => "stocks#stock_calendar"
   resources :baskets
+  delete :baskets, to: 'baskets#destroy_selected_products'
   resources :purchases
   root 'homes#index'
   devise_for :users, controllers: {

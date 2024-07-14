@@ -1,11 +1,14 @@
 class BasketsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_purchase, { only: [:show, :edit] }
-  before_action :ensure_correct_user, { only: [:show, :edit] }
+  before_action :ensure_correct_user, { only: [:edit] }
 
   def index
     @user = User.find(current_user.id)
-    @baskets = @user.baskets
+    @baskets = @user.baskets.order('id DESC')
+    if @user.families.first.present?
+      @group_baskets = Basket.joins(user: :user_groups).where.not(user_id: current_user.id).merge(UserGroup.where(family_id: current_user.families.first.id))
+    end
   end
 
   def show
@@ -53,9 +56,19 @@ class BasketsController < ApplicationController
     redirect_to :baskets
   end
 
+  def destroy_selected_products
+    @baskets = Basket.all
+    checked_data = params[:deletes]&.keys
+    if checked_data.nil?
+      redirect_back fallback_location: baskets_path
+    elsif @baskets.destroy(checked_data)
+      redirect_to :baskets
+    end
+  end
+
   private
 
   def basket_params
-    params.require(:basket).permit(:product_image, :product_name, :product_qty, :due_date, :stock_id, :user_id)
+    params.require(:basket).permit(:product_image, :product_name, :product_qty, :due_date, :stock_id, :user_id, :deletes)
   end
 end
