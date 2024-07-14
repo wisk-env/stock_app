@@ -4,7 +4,9 @@
   <% if @baskets.present? %>
     <table>
       <tr>
-        <th>チェック</th>
+        <th>
+          <%= check_box_tag :baskets, id: "allCheckBox" %>
+        </th>
         <th>商品画像</th>
         <th>商品名</th>
         <th>購入数</th>
@@ -16,7 +18,7 @@
       <% @baskets.each do |basket| %>
       <tr>
         <td>
-          <%= check_box_tag "deletes[#{ basket.id }]", basket.id %>
+          <%= check_box_tag "deletes[#{ basket.id }]", basket.id, false, class: "checkbox" %>
         </td>
         <td>
           <%= image_tag("#{basket.product_image}") %>
