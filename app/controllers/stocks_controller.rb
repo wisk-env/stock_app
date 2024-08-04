@@ -5,7 +5,7 @@ class StocksController < ApplicationController
 
   def index
     @user = User.find(current_user.id)
-    @stocks = @user.stocks.order('id DESC')
+    @stocks = @user.stocks.order('id DESC').page(params[:page]).per(5)
     if @user.families.first.nil?
       @stock_categories = @user.stocks.select(:category).distinct
       @tag_lists = @user.tags.distinct
@@ -70,10 +70,10 @@ class StocksController < ApplicationController
   def search
     @user = User.find(current_user.id)
     if @user.families.first.nil?
-      @results = @q.result.distinct
+      @results = @q.result.distinct.page(params[:page]).per(6)
     else
       @user_id = User.joins(:user_groups).includes(:user_groups).merge(UserGroup.where(family_id: current_user.families.first.id))
-      @results = @q.result.order(id: "DESC").distinct.where(user_id: [@user_id.ids])
+      @results = @q.result.order(id: "DESC").distinct.where(user_id: [@user_id.ids]).page(params[:page]).per(6)
     end
   end
 

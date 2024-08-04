@@ -100,6 +100,7 @@
     </div>
   <% end %>
 <% end %>
+<%= paginate @stocks %>
 <h1>グループのストック</h1>
 <% if @user.families.first.nil? %>
   所属しているグループはありません

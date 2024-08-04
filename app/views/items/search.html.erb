@@ -9,7 +9,7 @@
     </div>
   <% end %>
   <% if @items.present? %>
-    <% @items.first(10).each do |item| %>
+    <% @items.each do |item| %>
       <div>
         <%= form_with(model: @item, local: true) do |f| %>        
           <% if item.medium_image_url.present? %>
@@ -29,5 +29,6 @@
         <% end %>
       </div>
     <% end %>
+    <%= paginate @items %>
   <% end %>
 </div>
