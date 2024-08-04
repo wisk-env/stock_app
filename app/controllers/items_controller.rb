@@ -1,7 +1,14 @@
 class ItemsController < ApplicationController
   def search
     if params[:keyword]
-      @items = RakutenWebService::Ichiba::Product.search(keyword: params[:keyword])
+      items = RakutenWebService::Ichiba::Product.search(keyword: params[:keyword])
+      @items_array = []
+      items.each do |item|
+        @items_array.push(item)
+      end
+      if @items_array.present?
+        @items = Kaminari.paginate_array(@items_array).page(params[:page]).per(10)
+      end
     end
     @item = Item.new
   end
