@@ -5,7 +5,7 @@ class StocksController < ApplicationController
 
   def index
     @user = User.find(current_user.id)
-    @stocks = @user.stocks.order('id DESC')
+    @stocks = @user.stocks.order('id DESC').page(params[:page]).per(5)
     if @user.families.first.nil?
       @stock_categories = @user.stocks.select(:category).distinct
       @tag_lists = @user.tags.distinct
